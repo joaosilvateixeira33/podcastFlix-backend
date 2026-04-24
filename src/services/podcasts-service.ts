@@ -1,32 +1,32 @@
 import { PodcastModel } from "../models/podcast-model";
-import { addPodcastByVideoId, findAllPodcasts, findPodcastById } from "../repositories/podcasts-repository";
+import * as PodcastRepository from "../repositories/podcasts-repository";
 import { getYoutubeVideoData } from "../utils/extract-video-data-helper";
 import { extractYoutubeVideoId } from "../utils/extract-video-id-helper";
-import { noContent, ok } from "../utils/http-helper";
+import * as HttpResponse from "../utils/http-helper";
 
 export const getPodcastService = async() => {
 
-    const data = await findAllPodcasts();
+    const data = await PodcastRepository.findAllPodcasts();
 
     let response = null;
 
     if(data) {
-        response = await ok(data);
+        response = await HttpResponse.ok(data);
     } else {
-        response = await noContent();
+        response = await HttpResponse.noContent();
     }
     
     return response;
 };
 
 export const getPodcastByIdService = async(id: string) => {
-    const data = await findPodcastById(id);
+    const data = await PodcastRepository.findPodcastById(id);
     let response = null;
 
     if(data) {
-        response = await ok(data);
+        response = await HttpResponse.ok(data);
     } else {
-        response = await noContent();
+        response = await HttpResponse.noContent();
     }
 
     return response;
@@ -51,11 +51,19 @@ export const createPodcastService = async (url: string, category: string[]) => {
         category: category
     };
     
-    const createdPodcast = await addPodcastByVideoId(newPodcast);
+    const createdPodcast = await PodcastRepository.addPodcastByVideoId(newPodcast);
 
     if (createdPodcast) {
-        return ok(createdPodcast);
+        return HttpResponse.ok(createdPodcast);
     } else {
-        return noContent();
+        return HttpResponse.noContent();
     }
 };
+
+export const deletePodcastService = async(id: string) => {
+    let response = null;
+    await PodcastRepository.deleteOnePodcast(id);
+
+    response = HttpResponse.ok({ message: "deleted sucefully"});
+    return response;
+}

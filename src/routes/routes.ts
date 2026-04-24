@@ -8,5 +8,6 @@ router.post("/podcasts", PodcastController.createPodcast);
 
 router.get("/podcasts/:id", PodcastController.getPodcastById);
 
+router.delete("/podcasts/:id", PodcastController.deletePodcast)
 
 export default router;

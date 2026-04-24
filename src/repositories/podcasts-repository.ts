@@ -42,3 +42,15 @@ export const addPodcastByVideoId = async (
 
     return podcast;
 };
+
+
+export const deleteOnePodcast = async(id: string) => {
+    const index = database.findIndex(podcast => podcast.id === id);
+
+    if(index !== -1) {
+        database.splice(index, 1);
+        console.log(id);
+    }
+
+    console.log("erro");
+}
