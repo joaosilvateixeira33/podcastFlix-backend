@@ -1,11 +1,14 @@
-import express, { Request, Response } from "express";
+import express, { json, Request, Response } from "express";
 
 const app = express();
+const port = process.env.PORT;
+
+app.use(json());
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Hello world!");
+    res.status(200).json({ message: "Hello world!" });
 });
 
-app.listen(3333, () => {
-    console.log("Server rodando na porta 3333");
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
