@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getPodcastByIdService, getPodcastService } from "../services/podcasts-service";
+import { createPodcastService, getPodcastByIdService, getPodcastService } from "../services/podcasts-service";
 
 export const getPodcast = async (req: Request, res: Response) => {
     const HttpResponse = await getPodcastService();
@@ -12,3 +12,15 @@ export const getPodcastById = async (req: Request, res: Response) => {
 
     res.status(HttpResponse.statusCode).json(HttpResponse.body);
 }
+
+export const createPodcast = async (req: Request, res: Response) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ message: "URL é obrigatória" });
+    }
+
+    const httpResponse = await createPodcastService(url);
+
+    res.status(httpResponse.statusCode).json(httpResponse.body);
+};

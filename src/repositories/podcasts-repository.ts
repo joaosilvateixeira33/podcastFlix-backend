@@ -33,3 +33,12 @@ export const findAllPodcasts = async ():Promise <PodcastModel[]> => {
 export const findPodcastById = async (id: string):Promise <PodcastModel | undefined> => {
     return database.find(podcast => podcast.id === id);
 }
+
+export const addPodcastByVideoId = async (
+    podcast: PodcastModel
+): Promise<PodcastModel> => {
+
+    database.push(podcast);
+
+    return podcast;
+};
