@@ -1,12 +1,12 @@
 import express, { json } from "express";
-import { getPodcast } from "./controllers/podcasts-controller";
+import router from "./routes/routes";
 
 export const createApp = () => {
     const app = express();
 
     app.use(json());
 
-    app.get("/", getPodcast);
+    app.use("/api", router);
 
     return app;
 }
