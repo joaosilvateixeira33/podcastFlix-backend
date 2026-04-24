@@ -1,10 +1,5 @@
-interface PodcastModel {
-    id: string;
-    podcastName: string;
-    episode: string;
-    videoId: string;
-    category: string[];
-};
+import { PodcastModel } from "../models/podcast-model";
+
 
 const database: PodcastModel[] = [
     {
