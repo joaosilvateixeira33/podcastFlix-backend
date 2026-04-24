@@ -1,13 +1,9 @@
+import { findAllPodcasts } from "../repositories/podcasts-repository";
 import { noContent, ok } from "../utils/http-helper";
 
 export const getPodcastService = async() => {
 
-    const data = { 
-        "podcastName": "flow",
-        "episode": "ANITTA - Flow #592",
-        "videoId": "UrinbwR5nrE",
-        "category": ["musica", "cantor"]
-    }
+    const data = await findAllPodcasts();
 
     let response = null;
 

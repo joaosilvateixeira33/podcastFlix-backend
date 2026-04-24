@@ -1,0 +1,40 @@
+interface PodcastModel {
+    id: string;
+    podcastName: string;
+    episode: string;
+    videoId: string;
+    category: string[];
+};
+
+const database: PodcastModel[] = [
+    {
+        id: crypto.randomUUID(),
+        podcastName: "flow",
+        episode: "ANITTA - Flow #592",
+        videoId: "UrinbwR5nrE",
+        category: ["musica", "cantor"]
+    },
+    {
+        id: crypto.randomUUID(),
+        podcastName: "inteligencia",
+        episode: "SÉRGIO SACANI (SPACE TODAY) - Inteligência Ltda. Podcast #450",
+        videoId: "qU04jIt67Jg",
+        category: ["ciencia", "tecnologia"]
+    },
+    {
+        id: crypto.randomUUID(),
+        podcastName: "minecast",
+        episode: "JAZZGHOST PODCAST - MineCast #19",
+        videoId: "CS8cjJbhMJ0",
+        category: ["minecraft", "jogos"]
+    },
+];
+
+
+export const findAllPodcasts = async ():Promise <PodcastModel[]> => {
+    return database;
+}
+
+export const findPodcastById = async (id: string):Promise <PodcastModel | undefined> => {
+    return database.find(podcast => podcast.id === id);
+}
