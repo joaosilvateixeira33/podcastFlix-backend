@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as PodcastService from "../services/podcasts-service";
+import { PodcastModel } from "../models/podcast-model";
 
 export const getPodcast = async (req: Request, res: Response) => {
     const HttpResponse = await PodcastService.getPodcastService();
@@ -27,6 +28,14 @@ export const createPodcast = async (req: Request, res: Response) => {
 export const deletePodcast = async(req: Request, res: Response) => {
     const id = req.params.id as string;
     const httpResponse = await PodcastService.deletePodcastService(id);
+
+    res.status(httpResponse.statusCode).json(httpResponse.body);
+}
+
+export const updatePodcast = async(req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const { category } = req.body;
+    const httpResponse = await PodcastService.updatePodcastService(id, category);
 
     res.status(httpResponse.statusCode).json(httpResponse.body);
 }

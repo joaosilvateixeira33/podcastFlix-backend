@@ -1,3 +1,4 @@
+import { response } from "express";
 import { PodcastModel } from "../models/podcast-model";
 import * as PodcastRepository from "../repositories/podcasts-repository";
 import { getYoutubeVideoData } from "../utils/extract-video-data-helper";
@@ -54,16 +55,24 @@ export const createPodcastService = async (url: string, category: string[]) => {
     const createdPodcast = await PodcastRepository.addPodcastByVideoId(newPodcast);
 
     if (createdPodcast) {
-        return HttpResponse.ok(createdPodcast);
+        return await HttpResponse.ok(createdPodcast);
     } else {
-        return HttpResponse.noContent();
+        return await HttpResponse.noContent();
     }
-};
+}; 
 
 export const deletePodcastService = async(id: string) => {
     let response = null;
     await PodcastRepository.deleteOnePodcast(id);
 
-    response = HttpResponse.ok({ message: "deleted sucefully"});
+    response = await HttpResponse.ok({ message: "deleted sucefully"});
+    return response;
+}
+
+export const updatePodcastService = async(id: string, category: string[]) => {
+    let response = null;
+    const data = await PodcastRepository.findAndModifyPodcast(id, category);
+
+    response = await HttpResponse.ok(data);
     return response;
 }

@@ -49,8 +49,16 @@ export const deleteOnePodcast = async(id: string) => {
 
     if(index !== -1) {
         database.splice(index, 1);
-        console.log(id);
+      
+    }
+}
+
+export const findAndModifyPodcast = async(id: string,  category: string[]) => {
+    const podcastindex = database.findIndex(podcast => podcast.id === id);
+
+    if(podcastindex !== -1) {
+        database[podcastindex].category = category;
     }
 
-    console.log("erro");
+    return database[podcastindex];
 }
