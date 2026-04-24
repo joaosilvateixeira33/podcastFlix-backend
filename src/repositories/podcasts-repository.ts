@@ -3,21 +3,21 @@ import { PodcastModel } from "../models/podcast-model";
 
 const database: PodcastModel[] = [
     {
-        id: crypto.randomUUID(),
+        id: "1",
         podcastName: "flow",
         episode: "ANITTA - Flow #592",
         videoId: "UrinbwR5nrE",
         category: ["musica", "cantor"]
     },
     {
-        id: crypto.randomUUID(),
+        id: "2",
         podcastName: "inteligencia",
         episode: "SÉRGIO SACANI (SPACE TODAY) - Inteligência Ltda. Podcast #450",
         videoId: "qU04jIt67Jg",
         category: ["ciencia", "tecnologia"]
     },
     {
-        id: crypto.randomUUID(),
+        id: "3",
         podcastName: "minecast",
         episode: "JAZZGHOST PODCAST - MineCast #19",
         videoId: "CS8cjJbhMJ0",
