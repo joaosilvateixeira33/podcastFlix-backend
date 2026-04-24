@@ -14,13 +14,13 @@ export const getPodcastById = async (req: Request, res: Response) => {
 }
 
 export const createPodcast = async (req: Request, res: Response) => {
-    const { url } = req.body;
+    const { url, category } = req.body;
 
-    if (!url) {
+    if (!url ) {
         return res.status(400).json({ message: "URL é obrigatória" });
     }
 
-    const httpResponse = await createPodcastService(url);
+    const httpResponse = await createPodcastService(url, category);
 
     res.status(httpResponse.statusCode).json(httpResponse.body);
 };

@@ -32,7 +32,7 @@ export const getPodcastByIdService = async(id: string) => {
     return response;
 };
 
-export const createPodcastService = async (url: string) => {
+export const createPodcastService = async (url: string, category: string[]) => {
     const videoId = extractYoutubeVideoId(url);
     const videoData = await getYoutubeVideoData(url);
 
@@ -48,7 +48,7 @@ export const createPodcastService = async (url: string) => {
         podcastName: videoData.channelTitle, 
         episode: videoData.title,            
         videoId: videoId as string,
-        category: []
+        category: category
     };
     
     const createdPodcast = await addPodcastByVideoId(newPodcast);
