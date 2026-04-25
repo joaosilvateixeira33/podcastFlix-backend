@@ -1,4 +1,3 @@
-import { response } from "express";
 import { PodcastModel } from "../models/podcast-model";
 import * as PodcastRepository from "../repositories/podcasts-repository";
 import { getYoutubeVideoData } from "../utils/extract-video-data-helper";

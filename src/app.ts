@@ -1,5 +1,6 @@
 import express, { json } from "express";
-import router from "./routes/routes";
+import routerPodcast from "./routes/podcast.routes";
+import routerUsers from "./routes/user.routes";
 import cors from "cors";
 
 export const createApp = () => {
@@ -13,7 +14,8 @@ export const createApp = () => {
         methods: ["GET", "POST", "PATCH", "DELETE"]
     }));
 
-    app.use("/api", router);
+    app.use("/api", routerPodcast);
+    app.use("/api", routerUsers);
 
     return app;
 }
