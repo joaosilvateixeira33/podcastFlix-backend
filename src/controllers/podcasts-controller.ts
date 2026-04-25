@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as PodcastService from "../services/podcasts-service";
-import { PodcastModel } from "../models/podcast-model";
 
 export const getPodcast = async (req: Request, res: Response) => {
     const HttpResponse = await PodcastService.getPodcastService();
