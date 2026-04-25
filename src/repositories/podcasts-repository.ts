@@ -1,7 +1,5 @@
 import { supabase } from "../data/supabase";
 import { PodcastModel } from "../models/podcast-model";
-import { writeData } from "../utils/escreve-dados-json";
-import { readData } from "../utils/ler-dados-json";
 
 export const findAllPodcasts = async (): Promise<PodcastModel[]> => {
     const {data, error} = await supabase
