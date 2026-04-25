@@ -21,7 +21,10 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.104.1",
     "cors": "^2.8.6",
+    "dnscache": "^1.0.2",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   }
 }

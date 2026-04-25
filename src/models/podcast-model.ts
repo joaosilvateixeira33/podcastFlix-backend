@@ -1,7 +1,7 @@
 export interface PodcastModel {
-    id: string;
+    id?: string; 
     podcastName: string;
     episode: string;
     videoId: string;
     category: string[];
-};
+}

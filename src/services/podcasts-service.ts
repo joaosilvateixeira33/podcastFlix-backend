@@ -8,28 +8,21 @@ export const getPodcastService = async() => {
 
     const data = await PodcastRepository.findAllPodcasts();
 
-    let response = null;
-
-    if(data) {
-        response = await HttpResponse.ok(data);
-    } else {
-        response = await HttpResponse.noContent();
+    if(data && data.length > 0) {
+        return await HttpResponse.ok(data);
     }
     
-    return response;
+    return await HttpResponse.noContent();
 };
 
 export const getPodcastByIdService = async(id: string) => {
     const data = await PodcastRepository.findPodcastById(id);
-    let response = null;
 
-    if(data) {
-        response = await HttpResponse.ok(data);
+    if (data) {
+        return await HttpResponse.ok(data);
     } else {
-        response = await HttpResponse.noContent();
+        return await HttpResponse.notFound(); 
     }
-
-    return response;
 };
 
 export const createPodcastService = async (url: string, category: string[]) => {
@@ -43,35 +36,38 @@ export const createPodcastService = async (url: string, category: string[]) => {
         };
     }
 
-    const newPodcast: PodcastModel = {
-        id: crypto.randomUUID(),
+    const newPodcast: Omit<PodcastModel, 'id'> = {
         podcastName: videoData.channelTitle, 
         episode: videoData.title,            
         videoId: videoId as string,
         category: category
     };
     
-    const createdPodcast = await PodcastRepository.addPodcastByVideoId(newPodcast);
+    const createdPodcast = await PodcastRepository.addPodcastByVideoId(newPodcast as PodcastModel);
 
     if (createdPodcast) {
-        return await HttpResponse.ok(createdPodcast);
+        return await HttpResponse.ok(createdPodcast); 
     } else {
-        return await HttpResponse.noContent();
+        return { statusCode: 400, body: { message: "Erro ao persistir no banco." } };
     }
 }; 
 
-export const deletePodcastService = async(id: string) => {
-    let response = null;
-    await PodcastRepository.deleteOnePodcast(id);
+export const deletePodcastService = async (id: string) => {
+    const success = await PodcastRepository.deleteOnePodcast(id);
 
-    response = await HttpResponse.ok({ message: "deleted sucefully"});
-    return response;
+    if (!success) {
+        return await HttpResponse.noContent(); 
+    }
+
+    return await HttpResponse.ok({ message: "deleted successfully" });
 }
 
-export const updatePodcastService = async(id: string, category: string[]) => {
-    let response = null;
+export const updatePodcastService = async (id: string, category: string[]) => {
     const data = await PodcastRepository.findAndModifyPodcast(id, category);
 
-    response = await HttpResponse.ok(data);
-    return response;
+    if (!data) {
+        return await HttpResponse.notFound(); 
+    }
+
+    return await HttpResponse.ok(data);
 }
