@@ -1,47 +1,77 @@
+import { supabase } from "../data/supabase";
 import { UserModel } from "../models/user-model";
-import { writeData2 } from "../utils/escreve-dados-json";
-import { readData2 } from "../utils/ler-dados-json";
 
 export const getUsers = async (): Promise<UserModel[] | undefined> => {
-    return await readData2();
-}
+    const { data, error } = await supabase
+        .from("users")
+        .select("id, name, email, categories"); 
 
-export const getUserById = async(id: string): Promise<UserModel | undefined>  => {
-    const users = await readData2();
-    return users.find(user => user.id === id);
-}
-
-export const createUser = async(user: UserModel): Promise<UserModel> => {
-    const users = await readData2();
-    users.push(user);
-    await writeData2(users);
-
-    return user;
-}
-
-export const removeUser = async(id: string):Promise<boolean> => {
-    const users = await readData2(); 
-    const index = users.findIndex(user => user.id === id);
-    
-    if (index !== -1) {
-        users.splice(index, 1);    
-        await writeData2(users);     
-        return true;
-    }
-    return false;
-}
-
-export const updateUser = async (id: string, name: string, email: string) => {
-    const users = await readData2();
-    const userIndex = users.findIndex(user => user.id === id);
-
-    if (userIndex !== -1) {
-        users[userIndex].name = name; 
-        users[userIndex].email = email; 
-        await writeData2(users);                  
-        
-        return users[userIndex];
+    if (error) {
+        console.error(`Erro ao buscar usuários: ${error.message}`);
+        return undefined;
     }
 
-    return null;
-}
+    return data as UserModel[];
+};
+
+export const getUserById = async (id: string): Promise<UserModel | undefined> => {
+    const { data, error } = await supabase
+        .from("users")
+        .select("id, name, email, categories")
+        .eq("id", id) 
+        .single();   
+
+    if (error) {
+        console.error(`Erro ao buscar usuário por ID: ${error.message}`);
+        return undefined;
+    }
+
+    return data as UserModel;
+};
+
+export const createUser = async (user: UserModel): Promise<UserModel | null> => {
+    const { id, ...userData } = user;
+
+    const { data, error } = await supabase
+        .from("users")
+        .insert([userData])
+        .select("id, name, email, categories")
+        .single();
+
+    if (error) {
+        console.error(`Erro ao criar usuário no Supabase: ${error.message}`);
+        return null;
+    }
+
+    return data as UserModel;
+};
+
+export const removeUser = async (id: string): Promise<boolean> => {
+    const { error } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", id); 
+
+    if (error) {
+        console.error(`Erro ao remover usuário no Supabase: ${error.message}`);
+        return false;
+    }
+
+    return true;
+};
+
+export const updateUser = async (id: string, name: string, email: string): Promise<UserModel | null> => {
+    const { data, error } = await supabase
+        .from("users")
+        .update({ name, email })
+        .eq("id", id)             
+        .select("id, name, email, categories") 
+        .single();                
+
+    if (error) {
+        console.error(`Erro ao atualizar usuário: ${error.message}`);
+        return null;
+    }
+
+    return data as UserModel;
+};
